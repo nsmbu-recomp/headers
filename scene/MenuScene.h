@@ -4,13 +4,13 @@
 #include <framework/seadTaskMgr.h>
 #include <state/StateMethod.h>
 
-class MenuTask0202B61C : public sead::CalculateTask   // vtbl Address: 0x10175F88
+class MenuScene : public sead::CalculateTask   // vtbl Address: 0x10175F88
 {
 public:
     // Address: 0x0297C5D8
-    MenuTask0202B61C(const sead::TaskConstructArg& arg);
+    MenuScene(const sead::TaskConstructArg& arg);
     // Address: 0x0297C4A8
-    virtual ~MenuTask0202B61C();
+    virtual ~MenuScene();
 
     // Address: 0x0297D268
     void enterFileState();
@@ -38,8 +38,8 @@ private:
     u8          _1cad;
     u8          _1cae[0x3E94 - 0x1CAE];
 };
-static_assert(sizeof(MenuTask0202B61C) == 0x3E94);
+static_assert(sizeof(MenuScene) == 0x3E94);
 
 // Address: 0x0202B61C
 extern template
-sead::TaskBase* sead::TTaskFactory<MenuTask0202B61C>(const sead::TaskConstructArg& arg);
+sead::TaskBase* sead::TTaskFactory<MenuScene>(const sead::TaskConstructArg& arg);
