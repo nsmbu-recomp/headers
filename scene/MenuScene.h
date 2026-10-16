@@ -28,15 +28,14 @@ private:
     // Address: 0x0297EAAC
     void copySaveToCourseInfo();
 
-private:
-    u8          _c8[0x1DC - 0xC8];
+    u32 _c8[(0x1DC - 0xC8) / sizeof(u32)];
     StateMethod mStateMethod;
-    u8          _1ec[0xDB1 - 0x1EC];
-    u8          mGateSelect;
-    u8          mGateStory;
-    u8          _db3[0x1CAD - 0xDB3];
-    u8          _1cad;
-    u8          _1cae[0x3E94 - 0x1CAE];
+    u8 _1ec[0xDB1 - 0x1EC];
+    u8 mGateSelect;
+    u8 mGateStory;
+    u8 _db3[0x1CAD - 0xDB3];
+    u8 mConfirmDone;
+    u8 _1cae[0x3E94 - 0x1CAE];
 };
 static_assert(sizeof(MenuScene) == 0x3E94);
 

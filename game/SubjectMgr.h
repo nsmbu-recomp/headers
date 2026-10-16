@@ -110,7 +110,7 @@ public:
     void clearSubject();
 
     // Address: 0x024CE594
-    void selectSaveFile(u8 file_index);
+    void selectSaveFile(u8 file_no);
 
 protected:
     u32     _10[(0x1E54 - 0x10) / sizeof(u32)];
