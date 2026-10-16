@@ -101,6 +101,17 @@ public:
         return static_cast<Mode>(mMode);
     }
 
+    u8 getSelectedFile() const
+    {
+        return mSelectedFile;
+    }
+
+    // Address: 0x024CD904
+    void clearSubject();
+
+    // Address: 0x024CE594
+    void selectSaveFile(u8 file_index);
+
 protected:
     u32     _10[(0x1E54 - 0x10) / sizeof(u32)];
     bool    mIsDisableAreaExit;
@@ -112,7 +123,8 @@ protected:
     bool    mIsDisableKaniAction;
     u8      _1e69[0x1E7A - 0x1E69];
     bool    mFumiScoreBySpinOnly;
-    u8      _1e7b[0x1E7F - 0x1E7B];
+    u8      _1e7b[0x1E7E - 0x1E7B];
+    u8      mSelectedFile;
     u8      mMode;
     u8      _1e80[0x1E84 - 0x1E80];
 };
