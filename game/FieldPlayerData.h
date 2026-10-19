@@ -6,6 +6,9 @@
 
 struct FieldPlayerData
 {
+    // Address: 0x024C27B8
+    FieldPlayerData();
+
     bool            is_entry;
     s32             life_cnt;
     PlayerMode      player_mode;

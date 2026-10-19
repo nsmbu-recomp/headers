@@ -8,6 +8,21 @@
 #include <container/seadSafeArray.h>
 #include <heap/seadDisposer.h>
 
+struct CheckPointData
+{
+    s32     index;              // -1 when no checkpoint is set
+    u8      world_no;           // Course to resume
+    u8      course_no;
+    u8      file_no;
+    u8      next_goto_no;
+    u32     _08;
+    u8      _0c[2];             // Written at [index] for index < 2, else at [0]
+    u8      _0e[2];             // Written at [index] for index < 2, else at [0]
+    u8      banner_digit[3];
+    u8      _13;
+};
+static_assert(sizeof(CheckPointData) == 0x14);
+
 class FieldGameData
 {
 public:
@@ -54,16 +69,70 @@ public:
         return mStatsData;
     }
 
+    // Address: 0x024BAD4C
+    void clearCheckPoint();
+
+    // Address: 0x024BADCC
+    s32 checkEnterCourse(u8 world_no, u8 course_no) const;
+
+    // Address: 0x024BADF4
+    void setCheckPoint(s32 index, u8 set_0c, u8 set_0e, u32 set_08,
+                       u8 world_no, u8 course_no, u8 file_no, u8 next_goto_no,
+                       const u8* banner_digit);
+
+    // Address: 0x024C1DF0
+    s32 searchEntryByCharacter(u32 character) const;
+
+    // Address: 0x024C1E38
+    FieldPlayerData* getEntryByCharacter(u32 character);
+
+    // Address: 0x024C1E8C
+    void swapEntries(s32 index_a, s32 index_b);
+
+    // Address: 0x024C1F50
+    void orderEntriesByCharacter(const u32* characters);
+
+    // Address: 0x024C203C
+    void setCoinNum(s32 num);
+
+    // Address: 0x024C2044
+    void resetEntriesUnk30();
+
+    // Address: 0x024C2088
+    void resetEntriesUnk2C();
+
+    // Address: 0x024C20CC
+    s32 searchEnteredEntryByCharacter(u32 character) const;
+
+    // Address: 0x024C2148
+    s32 getEnteredEntryNum() const;
+
 private:
-    u32                 mCheckPoint[0x14 / sizeof(u32)];    // TODO: CheckPoint
+    CheckPointData      mCheckPoint;
     sead::SafeArray<
         FieldPlayerData,
         cPlayerNum
     >                   mPlayerData;
     s32                 mCoinNum;
-    u32                 _138[(0x15C - 0x138) / sizeof(u32)];
+    u32                 _138;           // Play seconds, written by the savedata sync (0x029D7A7C / 0x029D7CC8)
+    u8                  _13c;
+    u8                  mBannerDigit[3];
+    u8                  _140;
+    u8                  _141[3];
+    u32                 _144[5];
+    u32                 _158;
     FieldGameMode       mGameMode;
-    u32                 _160[(0x1A8 - 0x160) / sizeof(u32)];
+    u8                  _160[0x0C];
+    s16                 _16c;
+    u8                  _16e[4];
+    u8                  _172[6];
+    u32                 _178[5];
+    u32                 _18c[5];
+    s16                 _1a0;
+    s16                 _1a2;
+    u8                  _1a4;
+    u8                  _1a5;
+    u8                  _1a6[2];
     InfoStats           mStatsData;
     bool                _1e0;
 };
