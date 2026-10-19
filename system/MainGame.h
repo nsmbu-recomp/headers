@@ -99,7 +99,10 @@ protected:
     CourseBeatenType    mCourseBeatenType;
     u32                 _28;
     sead::BitFlag32     mReplayFlag;
-    u32                 _30[(0x21DDC - 0x30) / sizeof(u32)];
+    u8                  _30[(0x82E - 0x30)];
+    bool                mIsNabbitEntry;
+    bool                mIsNabbitEntryMii;
+    u8                  _830[(0x21DDC - 0x830)];
     u8                  _21ddc[30];
     bool                mIsShadowkunQuest;
     u32                 _21dfc[(0x21E18 - 0x21DFC) / sizeof(u32)];

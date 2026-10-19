@@ -30,6 +30,12 @@ public:
     // Address: 0x024BC950
     virtual ~CourseTask();
 
+    // Address: 0x024BCE88
+    void setupNabbitEntry();
+
+    // Address: 0x024BCFAC
+    void setGlyph(s32 index, s8 value);
+
     // Address: 0x024C01DC
     void setSubjectClear();
     // Address: 0x024C01F4
@@ -83,6 +89,8 @@ private:
     GamesceneBase*  mpGamescene;
     u32             _d0[(0x124 - 0xD0) / sizeof(u32)];
     FieldGameData   mGameData;
-    u32             _308[(0x5A4 - 0x308) / sizeof(u32)];
+    u32             _308[(0x59C - 0x308) / sizeof(u32)];
+    bool            mIsNabbitEntry;
+    s32             mNabbitEntryIndex;
 };
 static_assert(sizeof(CourseTask) == 0x5A4);
