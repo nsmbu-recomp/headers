@@ -23,6 +23,12 @@ static_assert(sizeof(SaveData) == 0xB134);
 
 struct FFLStoreData;
 
+// Address: 0x029E2924
+bool checkSavedataBlockCrc(const void* block, u32 size);
+
+// Address: 0x029E2994
+void writeSavedataBlockCrc(void* block, u32 size);
+
 class SaveMgr
 {
     SEAD_SINGLETON_DISPOSER(SaveMgr)
@@ -82,7 +88,49 @@ public:
         startQuickSaveGame(mpSavedata->header.last_file);
     }
 
+    // Address: 0x029D8270
+    void startReadGame();
+
+    // Address: 0x029D8304
+    void startWriteGame();
+
+    // Address: 0x029D82A0
+    void startReadChallengeReplay(void* param);
+
+    // Address: 0x029D8E88
+    void startWriteChallengeReplay(void* param);
+
+    // Address: 0x029D82D4
+    void startReadPersonalSavedata();
+
+    // Address: 0x029D8394
+    void startWritePersonalSavedata();
+
 protected:
+    // Address: 0x029D914C
+    void loadSavedata();
+
+    // Address: 0x029D94C4
+    void updatePlayTime();
+
+    // Address: 0x029D9560
+    void saveSavedata();
+
+    // Address: 0x029D97BC
+    void loadChallengeReplay();
+
+    // Address: 0x029D994C
+    void saveChallengeReplay();
+
+    // Address: 0x029D9AD8
+    void loadPersonalSavedata();
+
+    // Address: 0x029D9CBC
+    void savePersonalSavedata();
+
+    // Address: 0x029D9E30
+    void runState(u32 state);
+
     sead::DelegateThread*   mpDelegateThread;
     Status                  mStatus;
     ReadError               mReadError;
