@@ -222,6 +222,9 @@ public:
 public:
     CourseDataFile();
 
+    // Address: 0x0269972C
+    void registerBlocks(const void* image);
+
     const void* getBlock(Block block)
     {
         return mBlock[block];
@@ -251,11 +254,21 @@ static_assert(sizeof(CourseDataFile) == 0x3B8);
 
 class CourseData
 {
+    // instance()       Address: 0x0269A1B0
+    // sInstance        Address: 0x101EB048, 0x101EB04C
+    // ~CourseData()    Address: 0x0269A304
     SEAD_SINGLETON_DISPOSER(CourseData)
 
 public:
+    // Address: 0x0269A144
     CourseData();
     ~CourseData();
+
+    // Address: 0x0269A244
+    void loadRecordCourseFiles();
+
+    // Address: 0x0269A2DC
+    CourseDataFile* getFileIfLoaded(s32 index) const;
 
     CourseDataFile* getFile(s32 index);
 
