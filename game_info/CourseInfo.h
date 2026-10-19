@@ -22,6 +22,8 @@ public:
     u8 getNextGotoNo() const { return mCourseNow.next_goto_no; }
     u32 getAreaNo() const { return mCourseNow.area_no; }
     u32 getSceneEnterType() const { return mCourseNow.scene_enter_type; }
+    u8 getNextWorldNo() const { return mCourseNext.world_no; }
+    u8 getNextCourseNo() const { return mCourseNext.course_no; }
 
     // Address: 0x024D293C
     void setNextWorldNo(u8);
