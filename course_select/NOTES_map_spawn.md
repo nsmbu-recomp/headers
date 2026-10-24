@@ -65,5 +65,17 @@ Those fail step 4 and take `L_02270268` (query helpers, often `ActorMgr::createL
 
 Player actor sat at W1S0 xyz `(-2950, 117.5, 3370)` while MainGame pose was W101 `(-5200, 57.5, 3490)`.
 
-Camera / title can still show Blooper’s Secret Lair (W1S0) when pose/course tag is W101.
-Title/camera path is not fully traced here.
+`CheckPointData.index` is the path node index.
+`W101` is node 1.
+`node+0x58` for that node is course slot 0.
+That value is also W1S0's node index.
+Writing the course slot as the checkpoint index makes the map camera and title use W1S0 (Blooper's Secret Lair).
+
+`CourseSelectPlayer+0x110` is `mModelPos` only while `create_` packs `createLater`.
+After spawn it is a live object pointer.
+Writing floats there faults in `NMSndObject::calc` (`ld` at `+0xC`).
+
+`CourseSelectMap::calc` (`0x021F6FE8`) runs only when `CourseSelectTask+0xDC9` is 0.
+The map camera goal tracks the checkpoint node, not `CourseSelectPlayer+0x50`.
+Focus setup at `0x0227CCF4` and `0x0227E2A8` copies the path-search node (`+0x50/+0x54/+0x5C` and position `+0x44`) into the camera.
+After a directed open that search still returns the world start, so those sites replace `r3` with the named course node before the stores.
