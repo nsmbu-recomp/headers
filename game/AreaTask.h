@@ -45,6 +45,11 @@ public:
     // Address: 0x024B81D4
     void requestCourseOut_Subject();
 
+    // After NextGoto lookup: CourseInfo enter-type 3, then setCourseOut.
+    // Site 0x024B8324 is immediately before setCourseOut.
+    // Address: 0x024B82A4
+    void prepareCourseOutEnter(u32 next_goto_key);
+
     // Address: 0x024B84A8
     void drawLayer3D(const agl::lyr::RenderInfo& render_info);
     // Address: 0x024B8B98
@@ -60,6 +65,9 @@ private:
     SysControllerWrapper    mControllerWrapper[cPlayerNum];
     sead::BoundBox2f        mBound;
     u32                     mLoopType;
-    u32                     _730[(0xBE4 - 0x730) / sizeof(u32)];
+    u32                     mCourseOutKind;         // +0x730  3 = normal course-out request
+    u8                      _734[(0x74D - 0x734)];
+    bool                    mIsCourseOut;           // +0x74D  set by setCourseOut
+    u8                      _74e[(0xBE4 - 0x74E)];
 };
 static_assert(sizeof(AreaTask) == 0xBE4);

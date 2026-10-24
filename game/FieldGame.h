@@ -80,6 +80,16 @@ public:
                        u8 world_no, u8 course_no, u8 file_no, u8 next_goto_no,
                        const u8* banner_digit);
 
+    // Map-enter call site 0x0250C76C (inside f_0250C3EC / InputMgr apply-save path):
+    //   index      = (s8)save_entry[+0x43]
+    //   set_0c     = (s8)save_entry[+0x44]
+    //   set_0e     = 0
+    //   set_08     = (s8)save_entry[+0x45]
+    //   world/course/file from CourseInfo::mCourseNow (+0x10/+0x11/+0x12)
+    //   next_goto  = save_entry[+0x46]
+    //   banner     = FieldGameData banner digits at +0x13D (copied to stack)
+    // Directed nsmbu open/run skips this path, so checkpoint index stays -1.
+
     // Address: 0x024C1DF0
     s32 searchEntryByCharacter(u32 character) const;
 

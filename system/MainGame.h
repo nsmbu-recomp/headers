@@ -90,16 +90,47 @@ public:
         return mReplayFlag.isOnBit(0);
     }
 
+    bool isMapPoseValid() const
+    {
+        return mReplayFlag.isOnBit(3);
+    }
+
+    void setMapPoseValid(bool valid)
+    {
+        if (valid)
+            mReplayFlag.setBit(3);
+        else
+            mReplayFlag.resetBit(3);
+    }
+
+    s32 getMapWorld() const { return mMapWorld; }
+    s32 getMapSection() const { return mMapSection; }
+    s32 getMapNodeIndex() const { return mMapNodeIndex; }
+    s32 getMapCourse() const { return mMapCourse; }
+
+    void setMapPose(s32 world, s32 section, s32 node_index, s32 course)
+    {
+        mMapWorld = world;
+        mMapSection = section;
+        mMapNodeIndex = node_index;
+        mMapCourse = course;
+    }
+
 protected:
     u32                 _10;
     bool                mIsSinglePlayerDRC;
     u32                 _18;
     bool                mIsNewGame;
-    CourseExitType      mCourseExitType;
-    CourseBeatenType    mCourseBeatenType;
+    CourseExitType      mCourseExitType;        // +0x20  set to 2 by requestCourseOut_Normal
+    CourseBeatenType    mCourseBeatenType;      // +0x24
     u32                 _28;
-    sead::BitFlag32     mReplayFlag;
-    u8                  _30[(0x82E - 0x30)];
+    sead::BitFlag32     mReplayFlag;            // +0x2C  bit 3 (=8): map-pose gate for CourseSelectPlayer::create_
+    u8                  _30[(0x19C - 0x30)];
+    s32                 mMapWorld;              // +0x19C  world index for map return pose
+    s32                 mMapSection;            // +0x1A0  section (0/1); path idx = (world<<1)+section
+    s32                 mMapNodeIndex;          // +0x1A4  node index in CourseSelectNodePath
+    s32                 mMapCourse;             // +0x1A8  course tag (pack course no), not node+0x50
+    u8                  _1ac[(0x82E - 0x1AC)];
     bool                mIsNabbitEntry;
     bool                mIsNabbitEntryMii;
     u8                  _830[(0x21DDC - 0x830)];

@@ -25,6 +25,7 @@ public:
     u8 getNextWorldNo() const { return mCourseNext.world_no; }
     u8 getNextCourseNo() const { return mCourseNext.course_no; }
 
+    // Only writes when mCourseNext already matches mCourseNow for that field.
     // Address: 0x024D293C
     void setNextWorldNo(u8);
     // Address: 0x024D2954
@@ -33,8 +34,13 @@ public:
     void setNextFileNo(u8);
     // Address: 0x024D2984
     void setNextNextGotoNo(u8);
+    // Writes mCourseNext.scene_enter_type (+0x20). Enter type 3 = course-out.
     // Address: 0x024D299C
     void setNextSceneEnterType(u32);
+
+    u8 getNextFileNo() const { return mCourseNext.file_no; }
+    u8 getNextNextGotoNo() const { return mCourseNext.next_goto_no; }
+    u32 getNextSceneEnterType() const { return mCourseNext.scene_enter_type; }
 
     // Address: 0x024D3910
     bool isShortPlay() const;
