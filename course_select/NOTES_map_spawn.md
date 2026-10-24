@@ -57,6 +57,10 @@ Those fail step 4 and take `L_02270268` (query helpers, often `ActorMgr::createL
 
 1. `AreaTask::requestCourseOut_Normal` (`0x024B77DC`):
    MainGame `+0x20 = 2`, `+0x24 = 0`, AreaTask `+0x730 = 3`
+   The opening `BossDemo` (`0x0202F0E0`) uses this same call, so exit type `2` is also the cinematic handoff.
+   Applying an existing save (`f_029D7648`) calls `f_029CF2D0`, which stores exit type `1` at `MainGame+0x20`.
+   Exit type alone cannot tell a file load or the cinematic from quitting a course.
+   Map-return seeding has to wait for `prepareCourseOut` (`0x024B8324`).
 2. Later `prepareCourseOutEnter` (`0x024B82A4`):
    `CourseInfo::setNextSceneEnterType(3)`, then `setCourseOut` (`0x024B814C` → `+0x74D = 1`)
 3. Site `0x024B8324` is immediately before `setCourseOut` (runtime seeds pose here)
