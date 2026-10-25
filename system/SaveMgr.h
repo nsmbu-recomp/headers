@@ -76,7 +76,17 @@ public:
     const FFLStoreData& getStoreData(s32 index) const;
 
     // Address: 0x029D8C10
+    // File confirm calls this after applySaveFile. The live snapshot reads
+    // MainGame fields that still hold the previous story record, then the
+    // quick record at +0xC28 is cleared and the buffer is written. The runtime
+    // copies the quick record over that snapshot when the snapshot did not move.
     void startSaveGame(u8 file);
+
+    // Address: 0x029D8478
+    // 0x02987200 calls this with the header's last file when that file is opened.
+    // It clears the quick record and writes the buffer, leaving the story record
+    // unchanged. The runtime copies the quick record onto the story record first.
+    void clearQuickAndWrite(u8 file);
 
     // Address: 0x029D8C7C
     void startQuickSaveGame(u8 file);
