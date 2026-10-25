@@ -75,7 +75,10 @@ public:
 
     const FFLStoreData& getStoreData(s32 index) const;
 
+    // Address: 0x029D8C10
     void startSaveGame(u8 file);
+
+    // Address: 0x029D8C7C
     void startQuickSaveGame(u8 file);
 
     void startSaveGame()
