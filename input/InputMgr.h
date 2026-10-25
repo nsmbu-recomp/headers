@@ -72,6 +72,9 @@ public:
         return !isFadein() && !isAreaSceneSwitch();
     }
 
+    // Address: 0x0250D1EC
+    void setupCourseControllers_();
+
 protected:
     u32             _10[(0x52C - 0x10) / sizeof(u32)];
     sead::Random    mRandom;

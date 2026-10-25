@@ -29,6 +29,9 @@ bool checkSavedataBlockCrc(const void* block, u32 size);
 // Address: 0x029E2994
 void writeSavedataBlockCrc(void* block, u32 size);
 
+// Address: 0x029D7CC8
+void writeDefaultGameDataToRecords_(SaveMgr* mgr);
+
 class SaveMgr
 {
     SEAD_SINGLETON_DISPOSER(SaveMgr)

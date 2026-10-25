@@ -58,6 +58,9 @@ public:
     // Address: 0x024B8034
     f32 getLoopPosX(f32 x);
 
+    // Address: 0x025CF020
+    static u32 getCourseOutHudFlag();
+
 private:
     u8                      _c9;
     bool                    mIsPrepareDone;
