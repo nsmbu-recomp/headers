@@ -74,7 +74,7 @@ void* CourseData_getFile(s32 index);
 // Address: 0x02A0A7AC
 GamesceneBase* GamesceneFactory_create(void* out_pair, const void* type_info, s32 heap_id, s32 a, s32 b);
 
-// Address: 0x02A0D584
+// Address: unknown (0x02A0D584 was mis-tagged; that PC is HeapMgr::setCurrentHeap)
 s32 GamesceneFactory_release(void* object);
 
 // Address: 0x02994044
