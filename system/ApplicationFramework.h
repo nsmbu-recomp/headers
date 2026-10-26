@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 #include <framework/cafe/seadGameFrameworkCafe.h>
 
 #include <cafe/procui.h>
@@ -35,8 +37,10 @@ protected:
     sead::MultiProcessMeterBar<1>   mLayerMgrCalcMeter; // sead::MultiProcessMeterBar<???>
     sead::MultiProcessMeterBar<1>   _380;               // sead::MultiProcessMeterBar<???>
     bool                            mFirstSwapDone;
-    s32                             _38C;
-    s32                             _390;
+    s32                             mCalcPassCount;     // +0x38C; see docs/frame-loop.md
+    s32                             mSkippedCalcCount;  // +0x390
     ProcUIStatus                    mProcUIStatus;
 };
 static_assert(sizeof(ApplicationFramework) == 0x398);
+static_assert(offsetof(ApplicationFramework, mCalcPassCount) == 0x38C);
+static_assert(offsetof(ApplicationFramework, mSkippedCalcCount) == 0x390);
