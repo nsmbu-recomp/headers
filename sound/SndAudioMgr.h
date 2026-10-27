@@ -46,6 +46,7 @@ public:
     bool loadData(SndItemID item_id);
 
 private:
-    u32 _28[(0x3D0 - 0x28) / sizeof(u32)];
+    u32 _1C[(0x3D0 - 0x1C) / sizeof(u32)];
+    const void* mpSoundStartable;  // +0x3D0
 };
 static_assert(sizeof(SndAudioMgr) == 0x3D4);
