@@ -3,6 +3,11 @@
 #include <container/seadSafeArray.h>
 #include <heap/seadDisposer.h>
 
+#include <layout/SelectCursorLayout.h>
+#include <layout/SelectCursorMiniLayout.h>
+
+#include <layer/aglRenderInfo.h>
+
 class SelectCursor
 {
     // createInstance()                             Address: 0x024C635C
@@ -30,15 +35,10 @@ public:
     void drawDRC(const agl::lyr::RenderInfo& render_info) const;
 
 private:
-    sead::SafeArray<
-        u32[0xECC / sizeof(u32)],   // SelectCursorLayout
-        24
-    > mLayout;
-    sead::SafeArray<
-        u32[0xEC8 / sizeof(u32)],   // SelectCursorMiniLayout
-        24
-    > mMiniLayout;
-    u32                             _2c5f0;
-    u8                              _2c5f4;
+    u8                                          _10[0x10];
+    sead::SafeArray<SelectCursorLayout, 24>     mLayout;
+    sead::SafeArray<SelectCursorMiniLayout, 24> mMiniLayout;
+    u32                                         _2c5f0;
+    u8                                          _2c5f4;
 };
 static_assert(sizeof(SelectCursor) == 0x2C5F8);

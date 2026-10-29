@@ -2,6 +2,8 @@
 
 #include <layout_sys/LayoutAllocator.h>
 #include <layout_sys/TagProcessor.h>
+#include <layout_sys/LayoutObj.h>
+#include <layout_sys/TextBox.h>
 
 #include <container/seadBuffer.h>
 #include <container/seadStrTreeMap.h>
@@ -22,8 +24,8 @@ class Window;
 
 } }
 
-class LayoutObj;
 class PartsLayoutObj;
+class LayoutObj;
 class TextBox;
 
 class Multi2D : public sead::IDisposer  // vtbl Address: 0x100E2A1C

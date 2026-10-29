@@ -4,6 +4,8 @@
 #include <layout_sys/AnimLayout.h>
 #include <state/FStateMgr.h>
 
+#include <layer/aglRenderInfo.h>
+
 class CommonWindowMgr;
 
 class CommonWindow  // vtbl Address: 0x100CCD58
@@ -116,6 +118,31 @@ public:
     {
         return mPaCursor.isNoPadInput();
     }
+
+    // Address: 0x02585CC4
+    void create();
+
+    // Address: 0x025869C8
+    void execute();
+
+    // Address: 0x02586AD4
+    void draw(const agl::lyr::RenderInfo& render_info) const;
+
+    // Address: 0x02586B4C
+    void drawDRC(const agl::lyr::RenderInfo& render_info) const;
+
+    // Address: 0x02586C1C
+    void processPadTrigTwoButtons();
+
+    // Address: 0x02586BDC
+    void processPadTrigOneButton();
+
+protected:
+    // Address: 0x02586C04
+    void* lookupPadTrigFuncTwoButtons_();
+
+    // Address: 0x02586BC4
+    void* lookupPadTrigFuncOneButton_();
 
 protected:
     FStateMgr<CommonWindow>                 mStateMgr;
