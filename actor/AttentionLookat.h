@@ -68,7 +68,7 @@ protected:
     sead::Vector2f  mPos;
     DistanceType    mMaxDistanceType;   // Maximum distance to catch player's attention
     sead::BitFlag32 mFlag;
-    sead::ListNode  mListNode;
+    sead::ListNode  mListNode;          // +0x24
 
     friend class AttentionMgr;
 };
