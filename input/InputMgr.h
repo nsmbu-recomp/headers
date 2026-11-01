@@ -72,6 +72,9 @@ public:
         return !isFadein() && !isAreaSceneSwitch();
     }
 
+    // Address: 0x0250CDBC
+    void applySaveEntry_(const u32* p_mode_word, void* p_arg, sead::Heap* heap);
+
     // Address: 0x0250D1EC
     void setupCourseControllers_();
 
