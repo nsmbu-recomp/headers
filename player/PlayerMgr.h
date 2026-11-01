@@ -142,6 +142,8 @@ public:
 
     PlayerBase* getCtrlPlayer(s32 player_no);
 
+    void initializeForCourseSetup();
+
     void setPlayer(s32 player_no, PlayerObject* p_player_obj);
     void resetPlayer(s32 player_no);
 
