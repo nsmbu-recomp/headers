@@ -162,7 +162,7 @@ void f_0268BE54();
 void f_02916AF0();
 
 // Address: 0x02742D2C
-void f_02742D2C();
+void sub_02742D2C(u32 arg = 0);
 
 // Address: 0x0269BB7C
 void f_0269BB7C();
