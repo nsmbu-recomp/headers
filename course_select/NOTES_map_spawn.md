@@ -65,6 +65,16 @@ Those fail step 4 and take `L_02270268` (query helpers, often `ActorMgr::createL
    `CourseInfo::setNextSceneEnterType(3)`, then `setCourseOut` (`0x024B814C` → `+0x74D = 1`)
 3. Site `0x024B8324` is immediately before `setCourseOut` (runtime seeds pose here)
 
+## Directed open
+
+`nsmbu open` applies the save and starts the course without the map-enter path.
+`CourseSelect` is still created from that save, so the player stands on the save node (`W1M0` on the repo file).
+Quitting the course does not run `prepareCourseOut` (`0x024B8324`), so the course-out seed never sees the map.
+The runtime remembers the last `setCourse_Story` pack and writes that node into the pose, the checkpoint, and the map player until the player has stood on it.
+It also writes `MainGame+0x19C` and `+0x1A8` as soon as that pack is chosen so the loading card names that course.
+The map camera focus sites replace the save's node with that pack's node while the directed open is active.
+After quit, those focus sites do not run again; the runtime keeps `CourseSelectCamera` (profile 857) aligned with the opened node each logic frame while the pose override is active.
+
 ## Observed mismatch
 
 Player actor sat at W1S0 xyz `(-2950, 117.5, 3370)` while MainGame pose was W101 `(-5200, 57.5, 3490)`.
