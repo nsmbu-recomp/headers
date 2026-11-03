@@ -73,7 +73,18 @@ Quitting the course does not run `prepareCourseOut` (`0x024B8324`), so the cours
 The runtime remembers the last `setCourse_Story` pack and writes that node into the pose, the checkpoint, and the map player until the player has stood on it.
 It also writes `MainGame+0x19C` and `+0x1A8` as soon as that pack is chosen so the loading card names that course.
 The map camera focus sites replace the save's node with that pack's node while the directed open is active.
-After quit, those focus sites do not run again; the runtime keeps `CourseSelectCamera` (profile 857) aligned with the opened node each logic frame while the pose override is active.
+After quit, those focus sites do not run again.
+The map player can already stand on the opened node while the drawn view stays on the world entrance.
+`CourseSelectCamera` (profile 857) stays at the origin.
+Guest `0x101FE470` stays at the origin.
+Neither position is the drawn view.
+`f_021E0288` reads a second pose for `getPath` (`CourseSelectMgr+0x18`):
+`MainGame+0x1AC` world, `+0x1B0` section, `+0x1B4` node index.
+Save apply stores `-1` in all three.
+The runtime writes the opened course there, and into the save-load triples at `+0x1C8`, `+0x1D4`, and `+0x1E0`.
+That write does not move the drawn view.
+`W201` is `(-5500, 270)` and `W2M0` is the entrance beside it.
+The drawn shot is centered on the entrance, with Mario at the edge.
 
 ## Observed mismatch
 
@@ -90,6 +101,6 @@ After spawn it is a live object pointer.
 Writing floats there faults in `NMSndObject::calc` (`ld` at `+0xC`).
 
 `CourseSelectMap::calc` (`0x021F6FE8`) runs only when `CourseSelectTask+0xDC9` is 0.
-The map camera goal tracks the checkpoint node, not `CourseSelectPlayer+0x50`.
+A checkpoint index of 0 (`W201`) still leaves the drawn view on the world entrance.
 Focus setup at `0x0227CCF4` and `0x0227E2A8` copies the path-search node (`+0x50/+0x54/+0x5C` and position `+0x44`) into the camera.
 After a directed open that search still returns the world start, so those sites replace `r3` with the named course node before the stores.
