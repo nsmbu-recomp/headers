@@ -19,6 +19,13 @@ public:
     // Address: 0x025F8230
     virtual ~PaCursor();
 
+    // Steps this cursor for one frame.
+    // A set byte at +0x25C runs the cursor state, then the update at 0x025F8394, then the bookkeeping at 0x025F8514.
+    // A clear byte at +0x25C skips that state.
+    // The clear path updates the button manager at +0x24 from the pointer, or from the pad when the pointer is idle.
+    // Address: 0x025F85B8
+    void execute();
+
     bool isNoPadInput() const
     {
         return mIsNoPadInput;

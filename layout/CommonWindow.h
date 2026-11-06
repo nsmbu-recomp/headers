@@ -122,9 +122,15 @@ public:
     // Address: 0x02585CC4
     void create();
 
+    // Steps the window when the byte at +0x1AA8 is set.
+    // A clear byte returns before the state and the layout update.
+    // The word at +0x1AA4 is the window type used by this step.
     // Address: 0x025869C8
     void execute();
 
+    // Draws the window layout.
+    // A clear byte at +0x1AA9 returns before the draw.
+    // A set byte at +0x1AAE also returns before the draw.
     // Address: 0x02586AD4
     void draw(const agl::lyr::RenderInfo& render_info) const;
 
