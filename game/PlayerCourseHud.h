@@ -9,6 +9,7 @@ class PlayerCourseHud
 {
 public:
     // Address: 0x0252F900
+    // DRC item strip. Uses the embedded AnimLayout<2> at +0x1804. Anim layer is 0x1C, not the menu layer 0xE.
     void drawStockItemList();
 
 protected:

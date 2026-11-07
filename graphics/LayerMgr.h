@@ -63,9 +63,12 @@ public:
     // virtual ...
 
     // Address: 0x024E0E50
+    // Data reset through RenderObjRenderMgr::clear (0x024FBED0). This is not a GPU clear.
     void clearRenderMgr();
 
     // Address: 0x024E0F84
+    // Records the display list for this logic step, including ModelG3d::calcGPU.
+    // A second call in the same procCalc_ crashes in the layer builder (0x02509488, null+4).
     void calcDL();
 
     // Address: 0x024E0FEC

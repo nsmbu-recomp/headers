@@ -223,6 +223,14 @@ public:
     CourseDataFile();
 
     // Address: 0x0269972C
+    // Fills mBlock (+0x04), mBlockSize (+0x40), and mBlockEntryNum (+0x7C) from the element size table at 0x100E5FCC.
+    // The table is one u32 per block. The file is one blob split on those sizes.
+    // Confirmed sizes: 0 = 0x80 environment, 1 = 0x18 options, 2 = 0x1C scroll,
+    // 3 = 0x08, 4 = 0x1C distant view, 5 = 0x14, 6 = 0x18 next goto, 7 = 0x18 map actor,
+    // 8 = 0x04 map actor load res, 9 = 0x1C area, 10 = 0x0C location, 11 = 0x18, 12 = 0x18,
+    // 13 = 0x0C rail info, 14 = 0x14 rail point.
+    // Subtracts 4 from the block 7 size before the entry count, so the map actor block has a 4 byte header in the file.
+    // Block matches this table, so the cBlock_* indices are the file indices.
     void registerBlocks(const void* image);
 
     const void* getBlock(Block block)
@@ -231,11 +239,31 @@ public:
     }
 
     const DistantViewData* getBg2Data(u16 id) const;
+
+    // Address: 0x02699BD8
+    // Base +0x1C, count +0x94, stride 0x18, id byte at +0x08.
     const NextGoto* getNextGoto(u8 id) const;
+
+    // Address: 0x02699C08
+    // Base +0x20, count +0x98, stride 0x18, type u16 at +0x00.
+    // p_start resumes at p_start + 0x18.
     const MapActorData* getMapActor(u16 type, const MapActorData* p_start = nullptr) const;
+
     const AreaData* getAreaData(u8 id, sead::BoundBox2f* p_box = nullptr) const;
+
+    // Address: 0x0269A020
+    // Base +0x2C, count +0xA4, stride 0x0C, id byte at +0x08.
+    // Also calls the area box builder 0x02699F70 with a delta of 0.0f when p_box != nullptr.
+    // 0x02699F70 takes the same fields as getAreaBox_ but takes separate x and y deltas, which are equal at every call site.
     const Location* getLocation(sead::BoundBox2f* p_box, u8 id) const;
+
+    // Address: 0x0269A0A8
+    // Base +0x38, count +0xB0, stride 0x0C, id byte at +0x00.
+    // Returns nullptr when the block is not loaded.
     const RailInfo* getRailInfo(u8 id) const;
+
+    // Address: 0x0269A0F4
+    // getRailInfo(rail_id), then block 14 + rail->point.start * 0x14.
     const RailPoint* getRailPoint(u8 rail_id) const;
 
 private:
@@ -261,6 +289,8 @@ class CourseData
 
 public:
     // Address: 0x0269A144
+    // Builds the four files with sub_02AFA350(mFile, 4, 0x3B8, 0x026A94FC).
+    // CourseData is 0xEF0 bytes: a SEAD_SINGLETON_DISPOSER prefix of 0x10 and mFile at +0x10.
     CourseData();
     ~CourseData();
 
@@ -268,6 +298,9 @@ public:
     void loadRecordCourseFiles();
 
     // Address: 0x0269A2DC
+    // Clamps an out-of-range index to element 0 ((u32)index >= 4).
+    // Returns nullptr when the file has no area data block (block 9).
+    // The rpx symbol map names this address CourseData::getFile.
     CourseDataFile* getFileIfLoaded(s32 index) const;
 
     CourseDataFile* getFile(s32 index);

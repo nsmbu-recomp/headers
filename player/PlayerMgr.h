@@ -142,6 +142,12 @@ public:
 
     PlayerBase* getCtrlPlayer(s32 player_no);
 
+    // Address: 0x0291713C
+    // Clears course-local player mgr fields, then rebuilds player slots.
+    // 0x02916F7C clears entry +0x1D, runs the staff-credit (0x02916CB8), title (0x02916EDC), or per-entry 0x02916BF8 spawn path,
+    // then 0x029170BC clears +0x1E when 0x02917040 allows.
+    // 0x02918780 reads getGameData()->getPlayerData(n).is_entry once actors exist.
+    // Until this init, getGameData() falls back to FieldGame::instance() when CourseTask is null (0x02918758).
     void initializeForCourseSetup();
 
     void setPlayer(s32 player_no, PlayerObject* p_player_obj);

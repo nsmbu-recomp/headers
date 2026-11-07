@@ -88,6 +88,14 @@ public:
     void setViewBoundBox(const sead::BoundBox2f& box);
 
     // Address: 0x024FA76C
+    // Fills the course ortho from the renderer view box at Renderer+0x10 (min x, min y, max x, max y).
+    // The call is OrthoProjection::setTBLR (0x02A06818) with (-min y, -max y, min x, max x).
+    // setTBLR stores top, bottom, left, and right at object offsets 0x9C, 0xA0, 0xA4, and 0xA8.
+    // Course-layer tile draws read that live ortho at RenderInfo+0x18.
+    // 0x026919A4 and 0x0269325C are two of those draws.
+    // The tile projection is copied into the display list at record time. A later change to the live ortho does not move the ground.
+    // The recorded ground matrix matches OrthoProjectionSync mViewProj at +0x44 except element 5, the vertical scale, which is negated.
+    // The tile draw negates top and bottom before OrthoProjection_syncViewProj (0x02A05A9C).
     void calcForAreaTask();
 
     // Address: 0x024FAA50

@@ -9,7 +9,12 @@
 class ReflectionRenderObjLayer
 {
 public:
-    // Address: 0x024F9C04
+    // Address: 0x024F9C04, ending 0x024FA280.
+    // Stored as a delegate at 0x024F9860 by the ctor 0x024F9800, so it is reached only through the layer render step.
+    // 0x024F9E24 is the cRenderStep_Opa arm, not a function entry.
+    // That arm clears this layer's own render buffer at 0x024FA07C with agl::RenderBuffer::clear (0x02A1E644):
+    // target index 0, flags 3 (colour + depth), colour (0, 0, 1, 0), depth 1.0f, stencil 0.
+    // That clear belongs to the reflection layer. The depth-shadow layer does not clear.
     void render_(const agl::lyr::RenderInfo& render_info);
 
 private:

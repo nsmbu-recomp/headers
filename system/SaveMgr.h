@@ -12,7 +12,7 @@ struct SaveData
         u8  version_minor;
         u8  version_patch;
         u8  last_file;
-        u8  rdash_state;    // 1 -> The game has notified you about the NSLU DLC.
+        u8  rdash_state;    // 1 -> The game has notified you about the NSLU DLC. Written by 0x02632458. See RDashMgr.
         u8  set_up;         // AB/XY & AX/BY setup
         u8  padding[2];
         u32 crc32;

@@ -23,6 +23,7 @@ public:
     SelectCursor();
 
     // Address: 0x024C63E0
+    // File-select cursor chrome. sInstance is 0x101D17A8. The typed layouts are SelectCursorLayout.
     void create();
 
     // Address: 0x024C6500

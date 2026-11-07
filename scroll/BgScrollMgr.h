@@ -114,6 +114,7 @@ public:
     }
 };
 
+// sInstance is 0x101E7C54. The screen update is 0x029A6170. See getScreenRect.
 class BgScrollMgr
 {
     SEAD_SINGLETON_DISPOSER(BgScrollMgr)
@@ -124,6 +125,23 @@ public:
     f32 getZoom() const { return mZoom; }
 
     const sead::BoundBox2f& getScrollBound() const { return mScroll; }
+    // The screen box is written by 0x029A6170, which also copies it into the scalar window.
+    // Left is +0x70, center X is +0x74, and right is +0x78.
+    // The box is +0x28 (min X), +0x2C (min Y), +0x30 (max X), and +0x34 (max Y).
+    // ActorCullUtil::screenCullCheck tests this box. The padded check at 0x02008838 tests the zoom box at +0x48.
+    // Actor::drawCullCheck_ uses this box, so a 16:9 box hides actors the wide camera can already see.
+    // The previous-frame box is +0x38. The fixed-size box is +0x58.
+    // Background edges are +0x88 and +0x90. The previous background box is +0x98.
+    // The same update can run again after it rewrites the screen box. A box already past 16:9 stays as it is.
+    // The first of those two updates leaves the scalar window at 16:9.
+    // The rewrite then builds the game's camera, and the second update widens that camera.
+    // Title parade and other screen-follow placement read the scalar window, so a wider left and right slide that parade toward the new right edge.
+    // A course widens the screen box, the zoom box, the scalar window, and the background box.
+    // The widen pivots on the average X of players inside that 16:9 screen box. Each player's fraction of the width stays the same as 16:9.
+    // The scalar center X becomes the midpoint of the widened left and right.
+    // With no player inside the box, the pivot stays the old center.
+    // The title course (CourseInfo::isTitle) does not widen the screen box, so the parade stays centered.
+    // Its background box still widens around its own center. Background parts spawn from those edges on the title course too.
     const sead::BoundBox2f& getScreenRect() const { return mScreen; }
     const sead::BoundBox2f& getScreenRectPrev() const { return mScreenPrev; }
     const sead::BoundBox2f& getScreenRectDefault() const { return mScreenDefault; }

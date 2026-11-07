@@ -22,6 +22,9 @@ public:
     void setPlayMode(PlayMode mode);
 
     // Address: 0x024DEF04
+    // Adds mRate (+0x14) to mFrame (+0x10) once per call.
+    // Rates are authored in frames per logic step, often 1.0f.
+    // Player, enemy, and layout code assume one step equals one sixtieth of a second.
     void play();
 
     f32 getFrameStart() const { return mFrameStart; }

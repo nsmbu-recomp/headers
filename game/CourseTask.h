@@ -75,6 +75,13 @@ void* CourseData_getFile(s32 index);
 GamesceneBase* GamesceneFactory_create(void* out_pair, const void* type_info, s32 heap_id, s32 a, s32 b);
 
 // Address: unknown (0x02A0D584 was mis-tagged; that PC is HeapMgr::setCurrentHeap)
+// sead::HeapMgr::setCurrentHeap is 0x02A0D584. getCurrentHeap is 0x02A0D554.
+// Both load a Cafe thread-specific slot id from *(0x101E80A0)+0x20, then call OSGetThreadSpecific.
+// The sead Thread object keeps the current heap at +0x6C.
+// Many sInstance pointers sit in MEM2 between RPX sections (about 0x101CB7C8-0x101E93BF), including that TLS root.
+// The range is inside .data (0x101C30C0-0x101E93B4) except the last 0xB bytes, and .data is PROGBITS.
+// A section reload rewrites it. Cold boot is fine because anonymous guest memory starts zeroed.
+// A later setCurrentHeap on a thread whose OSThread TLS was wiped faults at guest 0x6C.
 s32 GamesceneFactory_release(void* object);
 
 // Address: 0x02994044
@@ -332,6 +339,27 @@ public:
     virtual ~CourseTask();
 
     // Address: 0x024BD86C
+    // Runs before the area task loads the course pack.
+    // FieldGameData, through CourseTask+0x124 / mGameData:
+    // 1. memcpy from FieldGame::getGameData(), the singleton filled by save, load, and map logic.
+    // 2. resetEntriesUnk30 and setupNabbitEntry.
+    // 3. checkEnterCourse / clearCheckPoint using CourseInfo now-world and now-course, and the enter type at CourseInfo+0x1E.
+    // 4. Glyphs. Reads mGameData banner digits at FieldGameData+0x13D..+0x13F into CourseTask+0x134 and calls setGlyph.
+    // 5. taskGameMode from the copied FieldGameData, including save byte +0x48 when sub_0250C3EC ran.
+    // 6. Challenge. SubjectMgr and ChallengeMgr timers read course files from CourseInfo bytes, not save offsets.
+    // After InputMgr::applySaveEntry_, the same mGameData buffer may change again when mode 1 or 2 calls sub_0250C3EC.
+    // MainGame+0x88 is the save record pointer and the apply mode.
+    // MainGame+0x2C is the story and pose flags for the CourseTask+0x28D gate.
+    // story_bytes[0] and [2] feed the +0x304 world-bit gate.
+    // MainGame+0x34 is PicturePaneMgr_lookupGlyph for CourseTask+0x264.
+    // This function does not load player fields from the save itself.
+    // Near the end (0x024BE210) it calls PlayerMgr::initializeForCourseSetup, then 0x02742F9C.
+    // 0x02742F9C takes the same FieldGameData*. Its first argument is *(0x101EC398), the course owner singleton.
+    // A direct open still has to seed CourseInfo next and now, MainGame+0x19C / +0x1A8 for the loading card,
+    // FieldGameData+0x13D..+0x13F (map setCheckPoint does not fill those when the overworld enter is skipped),
+    // and the FieldGame singleton that this memcpy copies.
+    // Save apply at boot plus sub_0250C3EC covers most of that when record byte0 != 0.
+    // Course setup does not replace enterMapFromGameData_ (0x024C2230) for the map return.
     void setupCourse();
 
     // Address: 0x024BCFC4

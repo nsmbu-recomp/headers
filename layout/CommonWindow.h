@@ -120,6 +120,8 @@ public:
     }
 
     // Address: 0x02585CC4
+    // Loads the WinText layout, then readResource, build, pane tables, and PaCursor on the layout at +0x24.
+    // The embedded object is 0x1ABC bytes. CommonWindowMgr::create calls this once.
     void create();
 
     // Steps the window when the byte at +0x1AA8 is set.

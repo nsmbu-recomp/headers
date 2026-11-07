@@ -49,6 +49,8 @@ public:
     bool isStaffCredit() const;
 
     // Address: 0x024D3940
+    // True when mCourseNow.course_no (+0x11) is 0x26.
+    // The title course does not widen BgScrollMgr's screen box. Its background box still widens.
     bool isTitle() const;
 
 private:

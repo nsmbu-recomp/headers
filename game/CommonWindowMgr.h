@@ -31,12 +31,15 @@ public:
     CommonWindowMgr();
 
     // Address: 0x024BC4C4
+    // Builds the embedded CommonWindow once: CommonWindow::create, which runs createLayoutObj, readResource, build, pane registration, and PaCursor setup on the layout at +0x24.
     void create();
 
     // Address: 0x024BC540
+    // Runs CommonWindow::execute (state machine and animPlay on layer 0xE when visible).
     void execute();
 
     // Address: 0x024BC590
+    // TV draw. GamePad and system DRC are drawDRC and drawDRC_System. A GamePad-only flow needs the DRC path as well.
     void draw(const agl::lyr::RenderInfo& render_info) const;
 
     // Address: 0x024BC5A4
@@ -44,6 +47,10 @@ public:
     // Address: 0x024BC5C4
     void drawDRC_System(const agl::lyr::RenderInfo& render_info) const; // Only draws if mCommonWindow.mIsSystemDRC == true
 
+    // Pause is not a separate function. Callers set this on the singleton:
+    // mRequestOpen, mType = cType_WinText_Pause, and the message type.
+    // Message copy can differ through msg_text_type while the window kind stays pause.
+    // PaCursor and the controller slots on this mgr consume input while the window is open.
     void open(
         CommonWindow::Type type,
         SysController::Id controller_id = SysController::cId_CafeDRC_SinglePlayer,
@@ -96,8 +103,11 @@ public:
     }
 
     // Address: 0x024BC5E4
+    // Delegates to CommonWindow::processPadTrigTwoButtons.
+    // That installs a handler from lookupPadTrigFuncTwoButtons_ (indexed by CommonWindow::Type at +0x1AA0) into +0x1128, then drives PaCursor and FStateMgr.
     PadTrigStatus processPadTrig_TwoButtons(bool enable_back_button);   // i.e., Window has two UI buttons
     // Address: 0x024BC7D4
+    // Same path as processPadTrig_TwoButtons, for the one-button lookup.
     PadTrigStatus processPadTrig_OneButton();                           // i.e., Window has one UI button
 
     bool cursorIsOnLeftButton() const

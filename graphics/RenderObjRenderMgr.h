@@ -60,6 +60,7 @@ public:
     void updateEnvObjMgr();
 
     // Address: 0x024FBED0
+    // Data reset of the render-obj lists. LayerMgr::clearRenderMgr calls this. It is not a GPU clear.
     void clear();
 
     // Address: 0x024FBF6C
@@ -71,6 +72,8 @@ public:
     // Address: 0x024FC2A4
     void drawXlu(s32 view_index, const agl::lyr::RenderInfo& render_info);
     // Address: 0x024FC3F0
+    // Draws the depth-shadow opa list. ShadowRenderObjLayer::draw_ (0x024FF988) calls this after setting polygon offset and stencil.
+    // The shadow layer issues no GX2Clear*.
     void drawShadowOpa(s32 view_index, const agl::lyr::RenderInfo& render_info);
     // Address: 0x024FC48C
     void drawReflectionOpa(s32 view_index, const agl::lyr::RenderInfo& render_info);

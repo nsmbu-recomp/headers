@@ -26,6 +26,7 @@ public:
     }
 
     // Address: 0x025D8EDC
+    // Coin counter text in gameplay scenes. Course gameplay actors and this text share the layout world with registerActor.
     virtual void setCoinNumText(s32 coin_num);
 
     virtual void vf3C()

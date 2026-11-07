@@ -9,7 +9,8 @@ namespace sead {
 class TaskBase;
 }
 
-// WIP rename of ApplicationFramework (same RPX class, size 0x398). See docs/frame-loop.md.
+// WIP rename of ApplicationFramework (same RPX class, size 0x398).
+// The frame-loop notes are on ApplicationFramework.
 class GameFrame : public sead::GameFrameworkCafe
 {
 public:

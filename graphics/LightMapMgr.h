@@ -138,6 +138,9 @@ public:
     // Address: 0x024E4E30
     void enter() override;
     // Address: 0x024E5008
+    // Runs inside the logic procCalc_ task tree, after procDraw_ has recorded the current present.
+    // The GPU can sample the course-select light maps while this calc replaces them.
+    // The present that stays stable is the one after that logic calc, whose own calc is a hold and leaves the maps alone.
     void calc() override;
 
     // Address: 0x024E3DC0
@@ -170,6 +173,8 @@ public:
     void loadAglEnvBinaryWithType(const sead::SafeString& name, const sead::SafeString& type, sead::Heap* heap = nullptr);
 
     // Address: 0x024E51C8
+    // Feeds soft contact shading on map props.
+    // Builds per-direction light-map names with lmDifCSW%u%c / lmSpcCSW%u%c (0x100BB5E0 / 0x100BB600).
     void initializeForCourseSelect(sead::Heap* heap = nullptr);
     // Address: 0x024E53B4
     void loadAglEnvBinaryWithLerpForCourseSelect(f32 t);
@@ -183,6 +188,7 @@ public:
     void getAmbColor(sead::Color4f* p_color, AmbColorType type) const;
 
     // Address: 0x024E5900
+    // Applies the lmDifCob and lmSpcCob maps through setModelLightMapWithName_.
     void setCobModelLightMapForCourseSelect(ModelG3d* p_model, u8 world, u8 world_sub_letter) const;
     // Address: 0x024E5A14
     void setModelLightMapForCourseSelect(ModelG3d* p_model) const;
@@ -195,6 +201,7 @@ private:
     void initializeViewDependent_();
 
     // Address: 0x024E5734
+    // Applies a named light map. Course select uses lmDifCob (0x100BB5F0) and lmSpcCob (0x100BB60C) through setCobModelLightMapForCourseSelect.
     void setModelLightMapWithName_(ModelG3d* p_model, const sead::SafeString& name, s32 idx_lghtmap, s32 model_light_map_index) const;
 
     // Address: 0x024E5B0C

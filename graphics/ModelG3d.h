@@ -191,11 +191,23 @@ private:
 
 public:
     // Address: 0x024F301C
-    // Calculates the drawing resources for skeleton matrices, shapes and materials
+    // Calculates the drawing resources for skeleton matrices, shapes and materials.
+    // Fills the skeleton uniform block before calcGPU.
+    // The block sits at skeleton+0x18. Its data pointer is the word at +0x18 and its size is the word at +0x1C.
+    // 0x02AAAD18 writes that block from the world matrices at skeleton+0x10, multiplied by the matrix at 0x101B7750.
+    // Skinned draws load it with LoadVertexUniforms (0x02AB4C44) from skeleton+0x18.
     void calc() override;
 
     // Address: 0x024F30DC
-    // Updates buffers for the GPU
+    // Updates buffers for the GPU.
+    // Runs while LayerMgr::calcDL records the display list, after procDraw_ has already queued the previous picture.
+    // Writing the uniform block here changes the next picture only.
+    // A hold present repeats that list and does not call calcGPU again.
+    // The display list keeps the uniform-block address, so another write replaces the uniforms of a picture still being copied.
+    // Course tiles do not use this block. They read the live ortho. See Renderer::calcForAreaTask.
+    // Each player's head is a separate model at PlayerModel+0x11C. It has one bone and no skeleton uniform, so calcGPU does not run for it.
+    // That draw is rigid. Shape byte +0x16 is 0, and the matrix uniform is the shape block written by 0x02AA56F4.
+    // Rebuilding the head with calcMdl from the face bone leaves the head on the current logic step.
     void calcGPU(s32 view_index, const sead::Matrix34f& view_mtx, const sead::Matrix44f& proj_mtx, RenderObjRenderMgr* p_render_mgr) override;
 
     // (Does nothing)
@@ -276,6 +288,13 @@ public:
     // Address: 0x024F47D8
     const char* getBoneName(s32 index) const override;
     // Address: 0x024F4820
+    // Bone count is the u16 at *(*(model+0x40))+8.
+    // World matrices are the pointer at *(model+0x40)+0x10, one 0x30-byte matrix per bone.
+    // Bone visibility is the bit array at ModelG3d+0x2C.
+    // The bone index shifted right by 5 selects the word. The low 5 bits select the bit from the least significant bit.
+    // A set bit is visible.
+    // Shapes are the array at ModelG3d+0x44, count in the u16 at +0x3C, stride 0x28.
+    // The shape object is the first word of each entry. Its bone index is the u16 at +0x10.
     u32 getBoneNum() const override;
 
     // Address: 0x024F4628

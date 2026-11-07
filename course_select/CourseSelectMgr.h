@@ -34,15 +34,18 @@ public:
         return mChangePlayerNum;
     }
 
-    // Path table at this+0x18. Named CourseSelectMgr::getPath in headers_names.
+    // Path table at this+0x18. Each table has 0x12 entries.
+    // Index is (world << 1) + section. An index of 0x12 or higher returns entry [0], so this never returns null.
     // Address: 0x021F9FC8
     CourseSelectNodePath* getPath(u32 world, u32 section);
 
     // Path table at this+0x60. Used by map-pose resolve (0x02242A84).
+    // Same index and fallback as getPath.
     // Address: 0x021F9FEC
     CourseSelectNodePath* getMapPath(u32 world, u32 section);
 
     // Address: 0x021C9464
+    // CourseSelectPathNode stride is 0x68. Rejects indices 0x100 and higher.
     static CourseSelectPathNode* getNode(CourseSelectNodePath* path, u32 node_index);
 
 protected:

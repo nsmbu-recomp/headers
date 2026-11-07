@@ -4,6 +4,8 @@ class TextBox  // vtbl Address: 0x100E45D8
 {
 public:
     // Address: 0x02681BFC
+    // setTextBoxMessageFromTextID pulls strings from the game MSBT pipeline.
+    // A custom string that is not a layout text has to hook this.
     void setMessageParam_(s32 param);
 
 protected:
