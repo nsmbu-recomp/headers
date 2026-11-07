@@ -11,6 +11,8 @@ public:
     // The other branch builds through the name at 0x100DEF54.
     // Those names are CourseSelectMenu.bflyt and CourseSelectMenuDL.bflyt.
     // The layout object is the AnimLayoutBase at +0x28.
+    // Build returns the .bflyt bytes in r3. The file name is not still in a register there.
+    // The port recognizes this menu by the Pa_TitleBtn_00 pane and may insert Pa_SetBtn_00 before the file is parsed.
     // The function then constructs the PaCursor at +0xEC8.
     // Address: 0x025A42CC
     void create();
