@@ -29,7 +29,16 @@ public:
     // Address: 0x024C6500
     void execute();
 
+    // r4 is the button the cursor follows. r5 is the cursor type. Type 0x18 returns.
+    // The layout stores that button at +0xEA0 and enables itself.
+    // Address: 0x024C6744
+    void set(void* button, s32 type, s32);
+
+    // Address: 0x024C67B4
+    void hide(s32 type);
+
     // Address: 0x024C65A0
+    // A clear byte at +0x2C5F4 returns before any cursor is drawn.
     void draw(const agl::lyr::RenderInfo& render_info) const;
 
     // Address: 0x024C6680

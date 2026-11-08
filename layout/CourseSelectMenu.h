@@ -33,10 +33,14 @@ public:
     // While PaCursor+0x25C is 0, a window such as Change Controller owns the pad.
     // A button word other than 0 sets PaCursor+0x268.
     // The idle state at 0x025A51EC reads PaCursor+0x25E before PaCursor::execute.
+    // While that byte is clear, the pad word at +0x1214 picks the next cursor index.
+    // Index 6 with the left bit goes to index 8 only when +0x1A0B is set. Otherwise left does nothing.
+    // The up bit from index 6 goes to index 5.
     // A clear byte plus Decide on the menu pad calls PaCursor::triggerDecide and enters 0x10211B34.
     // That state's execute is 0x025A5420. It stores the action for the cursor index at +0x24 and enters 0x10211B54.
-    // 0x10211B54 starts the button click with Multi2D::animStartSetup. When the animator ends, its execute enters the stored action.
+    // 0x10211B54 starts OutBtn with Multi2D::animStartSetup. When the animator ends, its execute enters the stored action.
     // Index 6 and index 7 both store 0x10211BD4. That action opens Button Settings.
+    // 0x10211DF4 starts InBtn and, when that animator ends, returns to the idle state 0x10211B14.
     // The call runs StateMethod::executeStateMethod on the state at +0x10.
     // It then runs PaCursor::execute on the cursor at +0xEC8.
     // It finishes with Multi2D::animPlay on the layout at +0x28, view layer 0xE.
