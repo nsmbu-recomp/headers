@@ -1,5 +1,7 @@
 #pragma once
 
+#include <state/FStateID.h>
+
 class PauseGame
 {
 public:
@@ -19,11 +21,11 @@ public:
     // Plus is bit 11, Touch is bit 12, Decide is bit 13, and Back is bit 14.
     // A set bit 4 of the word at button+0x04 is a button the cursor may land on.
     // The open menu state is 0x10216DB4. Its execute at 0x025FDF98 reads +0x50.
-    // A word of 3 at +0x1C enters 0x10216DD4. That state's enter starts the controller-window animation.
-    // Plus or Back (mask 0x4800) changes to 0x10216DF4, which starts the same animation.
+    // A word of 3 at +0x1C enters 0x10216DD4. That state's enter plays the layout anim named Out.
+    // Plus or Back (mask 0x4800) changes to 0x10216DF4, which plays the same Out.
     // That state's execute waits for an animation flag, then enters 0x10216D74, which enters 0x10216D94.
     // 0x10216D94 is the controller window. Decide only sets +0xA91, and nothing opens the window from that byte.
-    // Enter is Plus. A Settings confirm on Pa_PlayStyle_00 has to leave 0x10216DF4, 0x10216D74, or 0x10216D94.
+    // Enter is Plus. A Settings confirm lets 0x10216DD4 or 0x10216DF4 finish Out, then leaves 0x10216D74 or 0x10216D94.
     // The current state object is the pointer at +0x228. The pending state id is the pointer at +0x224.
     // Closing the overlay sets +0xA90 again. Those three states have to be gone before that, or the controller window opens.
     // The course object has already run 0x025FD500 before this function sees the frame.
@@ -32,4 +34,13 @@ public:
     // Draw uses the bytes at +0x1E4, +0x1E6 or +0x1E5, and +0x8.
     // Address: 0x025F3834
     void execute();
+
+    // StateID_BackOut         Address: 0x10216DF4
+    // initializeState_BackOut Address: 0x025FE4A4
+    // executeState_BackOut    Address: 0x025FE4EC
+    // finalizeState_BackOut   Address: 0x025FE53C
+    // Plus or Back from the open menu enters this state and plays the layout anim named Out.
+    // Its execute waits on layout anim 0, then enters 0x10216D74.
+    // finalizeState_BackOut clears the draw, shown, and controller-window bytes, then resets the button manager.
+    DECLARE_STATE_ID(PauseGame, BackOut)
 };
