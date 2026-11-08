@@ -27,6 +27,8 @@ public:
     // The current state object is the pointer at +0x228. The pending state id is the pointer at +0x224.
     // Closing the overlay sets +0xA90 again. Those three states have to be gone before that, or the controller window opens.
     // The course object has already run 0x025FD500 before this function sees the frame.
+    // Opening this menu plays the layout anim named In through 0x02671680 with r4 = 0.
+    // The name object is 0x10216E14. The layout pointer is at +0.
     // Draw uses the bytes at +0x1E4, +0x1E6 or +0x1E5, and +0x8.
     // Address: 0x025F3834
     void execute();
