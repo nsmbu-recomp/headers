@@ -8,6 +8,12 @@ public:
     // Address: 0x026454E4
     void create();
 
+    // Address: 0x026454CC
+    void hideIfEnabled();
+
+    // Address: 0x02645808
+    void disable();
+
     // create() stores getRootPane() at +0xEA4 and sets +0xEBF / +0xEC3 for player slots 0x16..0x17.
 
 protected:
