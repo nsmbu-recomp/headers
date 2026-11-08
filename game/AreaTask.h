@@ -50,6 +50,17 @@ public:
     // Address: 0x024B82A4
     void prepareCourseOutEnter(u32 next_goto_key);
 
+    // Guessed name.
+    // Course tile callback stored on this task. Runs only when the step in r5 is 0.
+    // RenderInfo arrives in r6. Loads the object at 0x101EAFE8 and tails to 0x0269018C.
+    // Address: 0x024B47A8
+    void drawCourseTiles(s32, s32 step, const agl::lyr::RenderInfo& render_info);
+
+    // Guessed name.
+    // Second course tile callback. Same step check. Tails to 0x02690458.
+    // Address: 0x024B47C8
+    void drawCourseTilesSecond(s32, s32 step, const agl::lyr::RenderInfo& render_info);
+
     // Address: 0x024B84A8
     void drawLayer3D(const agl::lyr::RenderInfo& render_info);
     // Address: 0x024B8B98

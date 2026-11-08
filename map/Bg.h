@@ -42,11 +42,16 @@ public:
     }
 
     void setWaterInWave(const sead::Vector2f& pos, u8 wave_scale);
+
+    // Copies the float at +0x14 to +0x18, then draws the TexQuad objects at +0x3F90.
+    // A hold present does not call this. See updateGrassAndFlowers.
+    // Address: 0x0268B70C
+    void drawGrassAndFlowers();
 };
 
 // Writes the grass and flower wave pairs.
 // The per-frame path is r4 == 0. The init path (r4 != 0) comes from 0x0268A038.
-// The draw is 0x0268B70C, inside the logic step that records the display list. A hold present does not call it.
+// drawGrassAndFlowers (0x0268B70C) runs inside the logic step that records the display list. A hold present does not call it.
 // The hold present copies the recorded picture from ApplicationFramework::calc_ (0x029C5104).
 // That draw copies Bg+0x14 to Bg+0x18, then draws four TexQuadDeco objects.
 // The objects sit at +0, +0xC78, +0x18F0, and +0x2568 inside Bg+0x3F90.

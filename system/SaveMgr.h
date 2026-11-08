@@ -29,6 +29,26 @@ bool checkSavedataBlockCrc(const void* block, u32 size);
 // Address: 0x029E2994
 void writeSavedataBlockCrc(void* block, u32 size);
 
+namespace sead {
+class TaskBase;
+}
+
+// Copies the chosen file's record onto FieldGame and MainGame.
+// An empty record starts a new game. A used record is sanitized, then lives, coins, and player setup are copied.
+// Address: 0x029D7648
+void applySaveFile(SaveMgr* mgr, u8 file);
+
+// Opens CourseSelect when that file's story record exists, and MenuScene when it does not.
+// Sets the new-game flag from the same record. The quick record must already be in the story record.
+// Address: 0x029872BC
+void continueFirstSave(sead::TaskBase* src_task);
+
+// File-select course flags. SaveDataSelect slot builders call this with the file index.
+// Copies 123 course-flag bytes at record+0x6B, and the death counters after them, into MainGame+0x31C.
+// Returns the popcount, clamped to 99.
+// Address: 0x029D7184
+u32 copyFileSelectCourseFlags_(SaveMgr* mgr, u32 file, u8* out_bits);
+
 // Address: 0x029D7CC8
 void writeDefaultGameDataToRecords_(SaveMgr* mgr);
 

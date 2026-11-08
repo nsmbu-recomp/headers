@@ -10,11 +10,27 @@ public:
     SndBgmMgr();
     ~SndBgmMgr();
 
+    // Returns whether id is below cGameBgmNum (29).
+    // Address: 0x029B83C8
     bool isGameBgm(s32 id);
+
+    // Guessed address. This and getGameControlBgmID both call isGameBgm, then return a name.
+    // Address: 0x029B8448
     const char* getGameBgmID(s32 id);
+
+    // Guessed address. See getGameBgmID.
+    // Address: 0x029B84D8
     const char* getGameControlBgmID(s32 id);
 
+    // Address: 0x029B83D8
     bool shouldHurryUp();
+
+    // Guessed name.
+    // r4 is the layer. Layer 17 stores r5 at mStreamID when isGameBgm(r5) is true.
+    // Callers load this from 0x101E7CA8. The fader layers are 17 and 29.
+    // Also reads SndAudioMgr::sInstance and compares the label STRM_BGM_MENU.
+    // Address: 0x029B85C8
+    void updateForLayer(s32 layer, u32 arg);
 
     // ...
 

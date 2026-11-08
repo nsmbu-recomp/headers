@@ -114,7 +114,7 @@ public:
     }
 };
 
-// sInstance is 0x101E7C54. The screen update is 0x029A6170. See getScreenRect.
+// sInstance is 0x101E7C54. updateScreen writes the screen box. See getScreenRect.
 class BgScrollMgr
 {
     SEAD_SINGLETON_DISPOSER(BgScrollMgr)
@@ -125,7 +125,8 @@ public:
     f32 getZoom() const { return mZoom; }
 
     const sead::BoundBox2f& getScrollBound() const { return mScroll; }
-    // The screen box is written by 0x029A6170, which also copies it into the scalar window.
+
+    // Writes the screen box, the zoom box, the scalar window, and the background box.
     // Left is +0x70, center X is +0x74, and right is +0x78.
     // The box is +0x28 (min X), +0x2C (min Y), +0x30 (max X), and +0x34 (max Y).
     // ActorCullUtil::screenCullCheck tests this box. The padded check at 0x02008838 tests the zoom box at +0x48.
@@ -142,6 +143,10 @@ public:
     // With no player inside the box, the pivot stays the old center.
     // The title course (CourseInfo::isTitle) does not widen the screen box, so the parade stays centered.
     // Its background box still widens around its own center. Background parts spawn from those edges on the title course too.
+    // Address: 0x029A6170
+    void updateScreen();
+
+    // Written by updateScreen.
     const sead::BoundBox2f& getScreenRect() const { return mScreen; }
     const sead::BoundBox2f& getScreenRectPrev() const { return mScreenPrev; }
     const sead::BoundBox2f& getScreenRectDefault() const { return mScreenDefault; }

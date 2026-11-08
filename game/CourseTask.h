@@ -338,7 +338,6 @@ public:
     // Address: 0x024BC950
     virtual ~CourseTask();
 
-    // Address: 0x024BD86C
     // Runs before the area task loads the course pack.
     // FieldGameData, through CourseTask+0x124 / mGameData:
     // 1. memcpy from FieldGame::getGameData(), the singleton filled by save, load, and map logic.
@@ -360,6 +359,7 @@ public:
     // and the FieldGame singleton that this memcpy copies.
     // Save apply at boot plus sub_0250C3EC covers most of that when record byte0 != 0.
     // Course setup does not replace enterMapFromGameData_ (0x024C2230) for the map return.
+    // Address: 0x024BD86C
     void setupCourse();
 
     // Address: 0x024BCFC4
