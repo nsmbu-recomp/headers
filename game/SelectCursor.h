@@ -35,9 +35,9 @@ public:
     void set(void* button, s32 type, s32);
 
     // Hides one cursor layout slot. type is a SelectCursorType index.
-    // Types below 0x16 and type 9 use mMiniLayout[type]. Other types use mLayout[type].
-    // Type 2 is the pause-menu yellow cursor. This clears only that slot's enable flag.
-    // The draw byte at +0x2C5F4 is not touched, so draw may still run for other slots.
+    // Types 0x12 through 0x15, and type 9, use mMiniLayout. Other types use mLayout.
+    // Type 2 is the pause-menu yellow cursor, in mLayout. This clears only that slot.
+    // The draw byte at +0x2C5F4 is not touched.
     // Address: 0x024C67B4
     void hide(s32 type);
 

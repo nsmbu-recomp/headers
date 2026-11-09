@@ -20,6 +20,11 @@ public:
     // 0x026829A4 sets bit 2 of +0x28 only when the step at +8 is 0. A later press has to clear that step first.
     // That bit calls virtual +0x24 on the button at +0x18, and only when the byte at button+0x84 is 0.
     // That virtual plays the click only when the float at +0xC of the anim at button+0x30 is 0.
+    // It then starts the decide anim at button+0x6C. Virtual +0xAC sets the speed and does not rewind the frame.
+    // 0x02676E74 ends with virtual +0xCC on that decide anim. That call sets the anim speed to 0.
+    // A later decide leaves button+0x84 set, so the click flag is dropped and 0x02677550 does not run.
+    // That later press has to restore the idle decide anim at button+0x6C or the press does not replay.
+    // 0x02677550 also returns without a sound when the low byte of the id at button+0xA4 is 0.
     // The helper at 0x02682594 crashes when the previous button at +0x18 is null.
     // Address: 0x02682608
     void execute(u8 decide_prev, u8 decide_now, sead::Vector2f* pointer_pos);
