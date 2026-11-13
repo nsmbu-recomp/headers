@@ -29,6 +29,10 @@ public:
     // Address: 0x02682608
     void execute(u8 decide_prev, u8 decide_now, sead::Vector2f* pointer_pos);
 
+    // When the step at +8 is 0, stores r4 as the button at +0x1C.
+    // Address: 0x02682990
+    void setSelectedButton(void* button);
+
 protected:
     u32         mSeBackOutputLine;  // CursorButtonBase::OutputLineFlag
     const char* mSeBack;
