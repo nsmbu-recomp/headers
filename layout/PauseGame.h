@@ -18,14 +18,6 @@ public:
     // Address: 0x025F3834
     void execute();
 
-    // Sets or clears bit 0 of the method-tree pause byte on course nodes stored on this object.
-    // Plus calls this with set = 1 from 0x0255E8B8. Continue calls it with set = 0 from 0x0255E9B4.
-    // Not called from executeCourse. Address: 0x025FE554
-    void setCoursePauseNode(u32 set);
-
-    // Sets or clears the player pause nodes at +0x278 and +0x27C and plays a menu button virtual.
-    // 0x025FBBE8 calls this with set = 1 or the byte at +0xA92. Address: 0x025FBA74
-    void setPlayerPause(u32 set);
     // The button pointer array is at +0x0C. The current index is at +0x10.
     // +0x4C is the cursor index. 0x025BE214 copies it to +0x10 before the cursor is placed.
     // +0x48 is the SelectCursorType for the yellow pause cursor. Type 2 is the full-size TV cursor.
@@ -35,7 +27,8 @@ public:
     // The pad word is at +0x50. Down is bit 7, up is bit 6.
     // Plus is bit 11, Touch is bit 12, Decide is bit 13, and Back is bit 14.
     // A set bit 4 of the word at button+0x04 is a button the cursor may land on.
-    // The open menu state is 0x10216DB4. Its execute at 0x025FDF98 reads +0x50.
+    // The open menu state is 0x10216DB4. Its execute at 0x025FDF98 reads +0x50 when +0x1C is 0.
+    // +0x1C is 1 while a decide is pending, 2 after A before the next step stores 3, and 3 enters Out.
     // A word of 3 at +0x1C enters 0x10216DD4. That state's enter plays the layout anim named Out.
     // Plus or Back (mask 0x4800) changes to 0x10216DF4, which plays the same Out.
     // That state's execute waits for an animation flag, then enters 0x10216D74, which enters 0x10216D94.
@@ -55,6 +48,17 @@ public:
     // Its execute waits on layout anim 0, then enters 0x10216D74.
     // finalizeState_BackOut clears the draw, shown, and controller-window bytes, then resets the button manager.
     DECLARE_STATE_ID(PauseGame, BackOut)
+
+    // StateID_Open            Address: 0x10216DB4
+    // initializeState_Open    Address: 0x025FDE00
+    // executeState_Open       Address: 0x025FDF98
+    // finalizeState_Open      Address: 0x025FDFB4
+    // Steps the button list while the story pause menu is up.
+    // Mode 0 reads +0x50 for Up and Down and copies a moving row into +0x10.
+    // Mode 0 finishes with 0x025BE214, which copies +0x4C into +0x10 for the stick-driven row.
+    // Plus or Back with mask 0x4800 enters BackOut and hides the cursor.
+    // A decide on a row sets +0xA91 and stores 3 at +0x1C on the next step, then enters Out.
+    DECLARE_STATE_ID(PauseGame, Open)
 };
 
 class MethodTreeNode;
@@ -70,6 +74,13 @@ class MethodTreeNode;
 // This function does not write AreaTask fields. The broader pause path also stores 1 at AreaTask+0x730 (mCourseOutKind) to step the course task out.
 // Address: 0x025FE554
 void PauseGame_setCourseCalcPause(PauseGame* pause_game, u32 paused);
+
+// Sets or clears player pause on the nodes at +0x278 and +0x27C and runs a menu button virtual.
+// 0x025FBBE8 branches here with paused = 1 or the byte at +0xA92. Address: 0x025FBA74
+void PauseGame_setPlayerPause(PauseGame* pause_game, u32 paused);
+
+// Latches pad activity into +0xA92 before the course state machine runs. Address: 0x025FD300
+void PauseGame_preExecute(PauseGame* pause_game);
 
 // Aims the yellow SelectCursor at the button at +0x10 and stores that button on the layout slot at +0x48.
 // Address: 0x025BE1F0

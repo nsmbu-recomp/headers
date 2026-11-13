@@ -41,6 +41,9 @@ public:
     // Address: 0x024C67B4
     void hide(s32 type);
 
+    // Sets the player pause byte for the layout slot indexed by type. Address: 0x024C68C0
+    void pausePlayer(s32 type);
+
     // Address: 0x024C65A0
     // A clear byte at +0x2C5F4 returns before any cursor is drawn.
     void draw(const agl::lyr::RenderInfo& render_info) const;

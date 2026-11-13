@@ -33,6 +33,9 @@ public:
     // Address: 0x02682990
     void setSelectedButton(void* button);
 
+    // Sets bit 2 of +0x28 when the step at +8 is 0. Address: 0x026829A4
+    void triggerDecide();
+
 protected:
     u32         mSeBackOutputLine;  // CursorButtonBase::OutputLineFlag
     const char* mSeBack;
