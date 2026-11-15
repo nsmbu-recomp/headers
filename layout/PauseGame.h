@@ -93,3 +93,20 @@ void sub_025BE214(PauseGame* self);
 // Steps UtilCursorButtonMgr at +0x14 from the pad, touch pointer, and decide edges. PauseGame::execute finishes here.
 // Address: 0x025BE30C
 void sub_025BE30C(PauseGame* self, u8 decide_prev, u8 decide_now);
+
+// Course-task layout slot touched when Plus opens the in-level pause menu.
+// The slot keeps Multi2D at +0x2C and method-tree nodes at +0x40, +0x4C, and +0x50.
+// +0x2D69 latches whether PauseGame_setCourseCalcPause should run.
+// Address: 0x0255E2C0
+void sub_0255E2C0(void* course_pause_slot);
+
+// Plays the In anim, pauses the layout nodes, and arms the row cursor button virtual.
+// PauseGame_setCourseCalcPause may run with paused = 0 when +0x2D69 is set.
+// The course-task path runs this before 0x0255E988.
+// Address: 0x0255E794
+void sub_0255E794(void* course_pause_slot);
+
+// Finishes Plus open: may call PauseGame_setCourseCalcPause with paused = 1,
+// clears pause on the pad nodes at +0x4C and +0x50, and runs reverse In setup on anim slot 0.
+// Address: 0x0255E988
+void sub_0255E988(void* course_pause_slot);
