@@ -64,6 +64,8 @@ Those fail step 4 and take `L_02270268` (query helpers, often `ActorMgr::createL
 2. Later `prepareCourseOutEnter` (`0x024B82A4`):
    `CourseInfo::setNextSceneEnterType(3)`, then `setCourseOut` (`0x024B814C` → `+0x74D = 1`)
 3. Site `0x024B8324` is immediately before `setCourseOut` (runtime seeds pose here)
+4. Death calls `requestCourseOut_Down` (`0x024B7808`) and later `setCourseOut` (`0x024B814C`) without `prepareCourseOutEnter`.
+   Site `0x024B814C` seeds the same directed-open pose before the course-out flag.
 
 ## Directed open
 
