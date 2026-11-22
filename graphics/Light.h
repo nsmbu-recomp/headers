@@ -38,3 +38,8 @@ private:
     f32             _44;
 };
 static_assert(sizeof(Light) == 0x48);
+
+// Stores p_position on the light entry and initializes the two embedded slot objects at 0x48 and 0x90.
+// Called from Light::update when the registered entry pointer at offset 0x14 is non-null.
+// Address: 0x024E2A0C
+void sub_024E2A0C(void* p_entry, sead::Vector3f* p_position);
