@@ -138,6 +138,11 @@ void f_024D967C();
 // Address: 0x024D9744
 void f_024D9744();
 
+// Drains every node in the intrusive list at offset 0x241A4, unlinking each entry and
+// tearing it down with flag 2 until the sentinel at offset 0x2A0D0 is reached.
+// Address: 0x024D9A50
+void f_024D9A50();
+
 // Address: 0x028D3A60
 void f_028D3A60();
 
