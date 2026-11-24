@@ -70,6 +70,11 @@ public:
         return nullptr;
     }
 
+    virtual bool checkBattle()
+    {
+        return false;
+    }
+
     virtual void initialize()
     {
     }
@@ -90,6 +95,10 @@ public:
     }
 
 protected:
+    // Ready-state battle trigger shared by initializeState_Ready and executeState_Ready (thunk at 0x0202E754).
+    // Address: 0x0202E5B8
+    void sub_0202E5B8();
+
     // Address: 0x0202ED24
     void setCourseOutFaderPos_() const;
 
