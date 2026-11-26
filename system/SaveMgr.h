@@ -22,6 +22,7 @@ struct SaveData
 static_assert(sizeof(SaveData) == 0xB134);
 
 struct FFLStoreData;
+class SaveMgr;
 
 // Address: 0x029E2924
 bool checkSavedataBlockCrc(const void* block, u32 size);
