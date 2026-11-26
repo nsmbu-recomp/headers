@@ -2,8 +2,6 @@
 
 #include <actor/AttentionLookat.h>
 
-#include <container/seadOffsetList.h>
-
 class ActorBase;
 
 class AttentionMgr  // vtbl Address: 0x10001364
@@ -20,9 +18,7 @@ public:
     // Address: 0x0200CB88
     AttentionMgr();
 
-    virtual ~AttentionMgr()
-    {
-    }
+    ~AttentionMgr() {}
 
     // Address: 0x0200CC8C
     void entry(const AttentionLookat& lookat);
@@ -33,7 +29,7 @@ public:
     const AttentionLookat* search(const ActorBase& actor_self, const sead::Vector2f& pos_self);
 
 protected:
-    sead::OffsetList<AttentionLookat>   mLookatList;
+    u8 mLookatStorage[0x14];
 
     // Address: 0x10001350
     static const f32 cMaxDistanceSqMax;   // Square of maximum possible value of all max-distances (square of 32 blocks = 262144 sq units)
