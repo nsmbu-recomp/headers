@@ -2,32 +2,13 @@
 
 #include <course_select/CourseSelectActor.h>
 
-// Course-select map demo actor: stores overworld map indices from create params and gates demo draw via profile checks.
 class CourseSelectDemoActor : public CourseSelectActor
 {
-    // getRuntimeTypeInfoStatic()::typeInfo initialization guard variable   Address: 0x101EA3D0
-    // getRuntimeTypeInfoStatic()::typeInfo                                 Address: 0x101EA3F4
     SEAD_RTTI_OVERRIDE(CourseSelectDemoActor, CourseSelectActor)
 
 public:
     // Address: 0x021D4CB4
     CourseSelectDemoActor(const ActorCreateParam& param);
-
-protected:
-    // Address: 0x021D5838
-    virtual ~CourseSelectDemoActor();
-
-    // Address: 0x021D4D60
-    virtual bool preExecute_();
-    // Address: 0x021D4DB8
-    virtual bool preDraw_();
-
-    // Address: 0x021D5948
-    virtual u8 getDemoFlag() const;
-    // Address: 0x021D5950
-    virtual void setDemoFlagOn();
-    // Address: 0x021D595C
-    virtual void setDemoFlagOff();
 
 protected:
     f32 _dc;
