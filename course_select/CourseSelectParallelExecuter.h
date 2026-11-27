@@ -12,7 +12,7 @@ class CourseSelectParallelExecuter  // vtbl Address: 0x10058B98 at +0x4020
 public:
     // Address: 0x02206634
     CourseSelectParallelExecuter();
-    ~CourseSelectParallelExecuter() {}
+    ~CourseSelectParallelExecuter();
 
     // Address: 0x02206788
     void initialize(sead::Heap* heap);
